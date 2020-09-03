@@ -3,9 +3,9 @@ FROM centos:7
 LABEL maintainer="bonju0102"
 
 ENV URL="rtsp://" \
-    WS_PORT=8082
+    WS_PORT=9999
 
-COPY ./entrypoint.sh /usr/local/bin/
+ADD https://github.com/bonju0102/ffmpeg-service/blob/master/entrypoint.sh /usr/local/bin/
 
 ## Dependencies layer
 RUN \
@@ -24,10 +24,9 @@ RUN \
   && unzip /tmp/jsmpeg-master.zip -d /home/ \
   && rm /tmp/jsmpeg-master.zip \
   # Make sure the entrypoint is executable
-  && chmod 755 /usr/local/bin/entrypoint.sh
-
-RUN \
-  cd /home/jsmpeg-master/ \
+  && chmod 755 /usr/local/bin/entrypoint.sh \
+  # Change to jsmppeg directory
+  && cd /home/jsmpeg-master/ \
   # Install Websocket & http-server package
   && npm install ws \
   && npm install http-server -g
